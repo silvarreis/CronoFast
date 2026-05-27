@@ -1,0 +1,85 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #ffffffb5;
+}
+body {
+    background-image: url("../../public/images/fundo-login.png");
+}
+nav {
+    display:flex;
+    justify-content: start;
+    height: 86.5vh;
+    align-items: center;
+}
+form {
+    display:flex;
+    flex-direction: column;
+    gap: 25px;
+    margin-left: 50px;
+    padding: 10px;
+    width: 100%;
+    max-width: 340px;
+    margin-top: 30px;
+}
+input {
+    width: 100%;
+    padding: 5px 2px;
+    background: transparent; 
+    border: none; 
+    border-bottom: 2px solid #ccc;
+    outline: none;    
+    color: #FFFFFF;
+    transition: border-color 0.3s;
+    font-size: 18px;
+}
+input::placeholder {
+    color: #FFFFFF;
+}
+input:focus {
+    border-bottom: 2px solid #1E5EFF;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active  {
+    transition: background-color 999999s ease-in-out 0s;
+    -webkit-text-fill-color: #FFFFFF !important;
+    background-color: transparent !important;
+}
+a {
+    float: right;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+button {
+   background: linear-gradient(120deg, #0B1F3A, #1E5EFF);
+   padding: 5px;
+   font-size: 1.1em;
+   cursor: pointer;
+   border: 1px solid #0B1F3A;
+   border-radius: 5px;
+}
+button:hover {
+    background: linear-gradient(135deg, #0B1F3A, #1E5EFF, #00BFA6);
+}
+#copy {
+    text-align: center;
+}
+@media (max-width: 835px) {
+    body {
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;      
+        background-position: 70% center;
+    }
+    form {
+        background-color: #0b1f3aff;
+        margin-left: 10px !important;
+        padding: 20px;
+    }
+}
