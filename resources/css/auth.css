@@ -3,30 +3,30 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #ffffffb5;
+    color: #ffffff;
 }
 body {
     background-image: url("../../public/images/fundo-login.png");
+    background-repeat: no-repeat;
+    height: 100vh;
+    display: grid;
+    grid-auto-flow: row;
+    margin: 0 10px;
 }
-nav {
-    display:flex;
-    justify-content: start;
-    height: 86.5vh;
-    align-items: center;
+.title {
+   grid-column: span 12;
 }
 form {
-    display:flex;
-    flex-direction: column;
-    gap: 25px;
-    margin-left: 50px;
+    grid-column: span 1;
+    align-self: center;
     padding: 10px;
-    width: 100%;
-    max-width: 340px;
-    margin-top: 30px;
+    display: grid;
+    grid-auto-flow: row;
+    align-items: center;
+    gap: 20px;
 }
 input {
-    width: 100%;
-    padding: 5px 2px;
+    padding: 8px 0;
     background: transparent; 
     border: none; 
     border-bottom: 2px solid #ccc;
@@ -50,7 +50,7 @@ input:-webkit-autofill:active  {
     background-color: transparent !important;
 }
 a {
-    float: right;
+    text-align: end;
     text-decoration: none;
 }
 a:hover {
@@ -58,17 +58,20 @@ a:hover {
 }
 button {
    background: linear-gradient(120deg, #0B1F3A, #1E5EFF);
-   padding: 5px;
-   font-size: 1.1em;
+   font-size: 1.4em;
    cursor: pointer;
    border: 1px solid #0B1F3A;
    border-radius: 5px;
+   padding: 8px;
 }
 button:hover {
     background: linear-gradient(135deg, #0B1F3A, #1E5EFF, #00BFA6);
 }
 #copy {
+    align-self: flex-end;
+    grid-column: span 12;
     text-align: center;
+    margin-bottom: 30px;
 }
 @media (max-width: 835px) {
     body {
@@ -77,9 +80,13 @@ button:hover {
         background-size: cover;      
         background-position: 70% center;
     }
+    .title {
+        text-align: center;
+    }
     form {
         background-color: #0b1f3aff;
-        margin-left: 10px !important;
-        padding: 20px;
+        padding: 25px 15px;
+        align-content: center;
+        grid-column: span 12;
     }
 }

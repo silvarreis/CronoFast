@@ -31,11 +31,12 @@ class TimePartController extends Controller
             $media = (($somaTotal($laps) / $laps->count()) * $item->production_pace) / 100;
             $calcMargem = $media + ($media * ($item->margin_value / 100));
             $refs = $item->internalReference->ref_code;
+            $grup = $item->center_work;
             
-            if (!isset($totalCalcMargem[$refs])) {
-                $totalCalcMargem[$refs] = 0;
+            if (!isset($totalCalcMargem[$refs][$grup])) {
+                $totalCalcMargem[$refs][$grup] = 0;
             }
-            $totalCalcMargem[$refs] += $calcMargem / 60;
+            $totalCalcMargem[$refs][$grup] += $calcMargem * 0.01;
             return [
                 'id'              => $item->id,
                 'center_work'     => $item->center_work,
@@ -75,11 +76,12 @@ class TimePartController extends Controller
             $media = (($somaTotal($laps) / $laps->count()) * $item->production_pace) / 100;
             $calcMargem = $media + ($media * ($item->margin_value / 100));
             $refs = $item->internalReference->ref_code;
+            $grup = $item->center_work;
             
-            if (!isset($totalCalcMargem[$refs])) {
-                $totalCalcMargem[$refs] = 0;
+            if (!isset($totalCalcMargem[$refs][$grup])) {
+                $totalCalcMargem[$refs][$grup] = 0;
             }
-            $totalCalcMargem[$refs] += $calcMargem * 0.01;
+            $totalCalcMargem[$refs][$grup] += $calcMargem * 0.01;
 
             return [
                 'id'              => $item->id,
@@ -93,7 +95,7 @@ class TimePartController extends Controller
                 'lap'             => $lapsAssociadas
             ];
 
-        })->where('reference', $id)->groupBy(['center_work','reference']);
+        })->where('center_work', $id)->groupBy(['center_work','reference']);
         
         $isPdf = false;
 

@@ -43,12 +43,12 @@
                                 <tfoot>
                                     <tr>
                                         <th colspan="2">Total (minutos)</th>
-                                        <th colspan="4">{{ number_format($totalCalcMargem[$ref], 2, ',', '.') }}</th>
+                                        <th colspan="4">{{ number_format($totalCalcMargem[$ref][$grup], 2, ',', '.') }}</th>
                                     <tr>
                                 </tfoot>
                             </table>
                     </x-card.body> 
-                    <x-card.footer boxBtn="view" id="{{ $ref }}"/>
+                    <x-card.footer boxBtn="view" id="{{ $grup }}"/>
                    
                 </x-card>
             @endforeach 

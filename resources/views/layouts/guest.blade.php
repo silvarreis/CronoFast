@@ -1,3 +1,4 @@
+@props(['title'])
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -5,11 +6,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>Login</title>
+        <title>CronoFast | {{$title}}</title>
 
         @vite(['resources/css/auth.css'])
     </head>
     <body>
-        {{ $slot }} 
+        {{ $slot }}
+        @vite(['resources/js/auth.js'])
     </body>
 </html>

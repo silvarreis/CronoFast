@@ -1,8 +1,11 @@
 <x-app-layout>
     <div class="col-12">
-        <div class="cicle">
-            <p id="time">00:00:00.00</p>
-        </div> 
+        <div class="d-flex justify-content-center">
+            <div class="box-time w-sm-100">
+                <p id="time">00:00:00.00</p>
+                <p>1/100</p>
+            </div> 
+        </div>
     </div>
     <div class="col-12 controls">
         <button class="btn" data-action="start">Iniciar</button>
@@ -11,11 +14,13 @@
         <button class="btn hidden" data-action="pause">Pausar</button>
         <button class="btn hidden" data-action="continue">Continuar</button>
     </div>
-    <div class="col-12" id="box-result-lap">
-        <form action="" id="laps" class="card-result-lap" method="post"></form>
+    <div class="col-12 laps-box">
+        <form action="" id="laps" class="box-result-lap" method="post"></form>
     </div>
-    <div class="col-12 m-auto">
-        <button type="button" class="btn hidden" data-open="add-times">
+    <div class="col-12 btn-calc-laps hidden">
+        <input type="checkbox" id="selectAll"> 
+        <label for="selectAll">Selecionar tudo</label>
+        <button type="button" class="btn" data-open="add-times">
             CALCULAR
         </button>
     </div>

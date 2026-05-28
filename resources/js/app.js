@@ -7,13 +7,13 @@ const formLaps          = document.querySelector("#laps");
 const meanArithmeticTag = document.getElementById("mean-arithmetic");
 const totalSelectedTag  = document.getElementById("total-selected");
 const totalTag          = document.getElementById("total");
+const selectAll         = document.getElementById('selectAll');
 
 let interval = false, arrayTime = [];
 let hour = 0, minutes = 0, hundredthsSecond = 0.0, i = 0, lapNumber = 1;
 let timeDisplay = document.getElementById('time');
 let lapsContainer = document.getElementById('laps');
-let boxResultLap = document.getElementById('box-result-lap');
-let btnCalc = document.querySelector("[data-open='add-times']");
+let btnCalc = document.querySelector(".btn-calc-laps");
 
 let timerLogic = {
     start: () => {
@@ -43,13 +43,13 @@ let timerLogic = {
         lapNumber = String(lapNumber).padStart(2, '0');
         const totalTime = timeDisplay.textContent;
         const lapTime = calcLapTime(totalTime);
-        boxResultLap.style.visibility = 'visible';
+        document.getElementById("laps").style.visibility = 'visible';
         const lapTimeBox = document.createElement('label');
-        lapTimeBox.classList.add('item');
+        lapTimeBox.classList.add("item");
         lapTimeBox.innerHTML = `
-            <span class="lap-number">${lapNumber}</span>
-            <input type="checkbox" class="hidden-checkbox" name="times[]" value="${lapNumber}, ${totalTime}, ${lapTime}">
+            <input type="checkbox" class="hidden-checkbox" id="${lapNumber}" name="times[]" value="${lapNumber}, ${totalTime}, ${lapTime}">
             <div class="record">
+                <span class="lap-number" for="${lapNumber}">${lapNumber}</span>
                 <span>${totalTime}</span>
                 <span>|</span>
                 <span><strong>${lapTime}</strong></span>
@@ -71,7 +71,7 @@ let timerLogic = {
     reset: () => {
         btnCalc.classList.add('hidden');
         lapsContainer.replaceChildren();
-        boxResultLap.style.visibility = 'hidden';
+        document.getElementById("laps").style.visibility = 'hidden';
         arrayTime = [];
         lapNumber = 1;
         showTime(true);
@@ -159,9 +159,16 @@ if (boxControls) {
         }
     });
 }
+if (selectAll) {
+    selectAll.addEventListener('change', function () {
+        document.querySelectorAll('.hidden-checkbox').forEach(item => {
+            item.checked = this.checked;
+        });
+    });
+}
 function updateProgress(percent) {
     document.querySelector('#time')
-        .style.setProperty('--progress', percent);
+    .style.setProperty('--progress', percent);
 }
 const getForm = (id) => document.getElementById(id);
 

@@ -32,6 +32,7 @@
         border: none;
         cursor: pointer;
         text-decoration: none;
+        text-align: center;
     }
     .lap-number{ background-color: #0b1f3A; color: #FFFFFF}
     a:hover { background: linear-gradient(90deg, #0b1f3A, #1E5EFF);}
@@ -91,6 +92,14 @@
         margin:2px auto;
         width: 98%;
     }
+    @media (max-width: 835px) {
+        .card {
+            width: 100%;
+        }
+        nav {
+            gap: 8px;
+        }
+    }
 </style>
 <body>
     @foreach($timeParts as $grup => $timePart)
@@ -103,7 +112,7 @@
             @endforeach
             @if(!$isPdf)
                 <a href="/dashboard">Voltar</a>
-                <a href="{{ request()->url() }}?pdf=1">EXPORTAR PARA PDF</a>
+                <a id="btn-pdf" href="{{ request()->url() }}?pdf=1">EXPORTAR PARA PDF</a>
             @endif
         </nav>
         <table>
@@ -138,7 +147,7 @@
                 <tfoot>
                     <tr>
                         <th colspan="2">Total (minutos)</th>
-                        <th colspan="4">{{ number_format($totalCalcMargem[$ref], 2, ',', '.') }}</th>
+                        <th colspan="4">{{ number_format($totalCalcMargem[$ref][$grup], 2, ',', '.') }}</th>
                     <tr>
                 </tfoot>
         </table>
