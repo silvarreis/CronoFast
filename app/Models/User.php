@@ -14,6 +14,7 @@ use App\Models\InternalReference;
 use App\Models\Operation;
 use App\Models\Time;
 use App\Models\TimePart;
+use App\Models\Machine;
 
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
@@ -41,6 +42,10 @@ class User extends Authenticatable
     public function timeparts()
     {
         return $this->hasMany(TimePart::class);
+    }
+    public function machine()
+    {
+        return $this->hasMany(Machine::class);
     }
     /**
      * Get the attributes that should be cast.

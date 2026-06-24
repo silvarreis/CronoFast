@@ -7,6 +7,7 @@
         <meta name="author" content="Diogo da Silva Oliveira">
         <title>CronoFast</title>
         @vite(['resources/css/app.css', 'resources/css/grid.css'])
+        <link rel="icon" type="image/x-icon" href="favicon.ico">
     </head>
     <body>
         @include('layouts.navigation')

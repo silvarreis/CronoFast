@@ -10,6 +10,7 @@ class TimePart extends Model
         'internal_reference_id',
         'employee_id',
         'operation_id',
+        'machine_id',
         'center_work',
         'margin_value',
         'production_pace',
@@ -30,6 +31,10 @@ class TimePart extends Model
     public function operation()
     {
         return $this->belongsTo(Operation::class);
+    }
+    public function machine()
+    {
+        return $this->belongsTo(Machine::class);
     }
     public function user()
     {

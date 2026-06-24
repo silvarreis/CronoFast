@@ -4,20 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\Models\Employee;
+use App\Models\Machine;
 
-class EmployeeController extends Controller
+class MachineController extends Controller
 {
     public function index()
     {
-        $employees = Employee::all()->where('user_id', Auth::user()->id);
-        return view('layouts.employee', compact('employees'));
+        $machines = Machine::all()->where('user_id', Auth::user()->id);
+        return view('layouts.machines', compact('machines'));
     }
     public function show(Request $request)
     {
         $search = $request->query('search');
 
-        $employees = Employee::when($search, function ($query, $search) {
+        $machines = Machine::when($search, function ($query, $search) {
 
             $search = trim($search);
 
@@ -28,32 +28,31 @@ class EmployeeController extends Controller
         })
         ->where('user_id', Auth::user()->id)->get();
 
-        return view('layouts.employee', compact('employees'));
+        return view('layouts.machines', compact('machines'));
     }
-    
     public function store(Request $request)
-    {  
-        $data = $request->validate([
-            'name' => 'required'
+    {
+        $validated = $request->validate([
+            'name' => 'required|max:6'
         ]);
-        auth()->user()->employees()->create($data);
+        auth()->user()->machine()->create($validated);
         return redirect()->back();
     }
     public function edit($id) 
     {  
-        return response()->json(Employee::select('name')->find($id));
+        return response()->json(Machine::select('name')->find($id));
     }
     public function update(Request $request, $id)
     {
-        $employees = Employee::find($id);
+        $machines = Machine::find($id);
         $data = $request->only(['name']);
-        $employees->update($data);
+        $machines->update($data);
         return redirect()->back();
     }
     public function delete($id)
     {
-        $employee = Employee::findOrFail($id);
-        $employee->delete();
-        return redirect()->back();
+        $machines = Machine::find($id);
+        $machines->delete();
     }
-} 
+    
+}

@@ -25,7 +25,7 @@
         </button>
     </div>
     <x-modal id="add-times">
-        <x-modal.header/>
+        <x-modal.header title="Registrar Tempo"/>
         <x-modal.body>
             <div class="box">
                 <p>Media Aritimetica(selec.):

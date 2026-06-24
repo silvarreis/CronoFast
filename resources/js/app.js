@@ -57,6 +57,9 @@ let timerLogic = {
         `
         lapNumber++;
         lapsContainer.prepend(lapTimeBox);
+        localStorage.setItem('historicoLapsHTML', lapsContainer.innerHTML);
+        localStorage.setItem('proximoLapNumero', lapNumber);
+        localStorage.setItem('time', totalTime);
     },
     pause: () => {
         if (lapNumber > 0 && lapNumber > 1) {
@@ -69,6 +72,9 @@ let timerLogic = {
         toggleButtons(['continue', 'reset'], ['pause', 'lap']);
     },
     reset: () => {
+        localStorage.removeItem('historicoLapsHTML');
+        localStorage.removeItem('proximoLapNumero');
+        localStorage.removeItem('time');
         btnCalc.classList.add('hidden');
         lapsContainer.replaceChildren();
         document.getElementById("laps").style.visibility = 'hidden';
@@ -178,6 +184,7 @@ document.addEventListener("click", (e) => {
     const sendForm = e.target.closest("[data-send]");
     const edit     = e.target.closest("[data-edit]");
     const deleteUp = e.target.closest("[data-delete]");
+    const deleteTime = e.target.closest("[data-delete-time]");
     const timeForm = e.target.closest("[data-time]");
     const view     = e.target.closest("[data-view]");
     const url      = window.location.pathname;
@@ -232,7 +239,7 @@ document.addEventListener("click", (e) => {
     if (edit) {
         const id = edit.dataset.edit;
         const form = document.querySelector(`#form-edit-${url.split('/')[1]}`);
-        const input = form.querySelectorAll('input, select')
+        const input = form.querySelectorAll('input')
         axios.get(`${url}/${id}/edit`).then(response => {
             const data = response.data;
             input.forEach(input => {
@@ -247,20 +254,20 @@ document.addEventListener("click", (e) => {
         });
     }
     if (deleteUp) {
+        const validate = confirm("Deseja apagar ?");
+        if (!validate) return;
         const id = deleteUp.dataset.delete;
-        const card = document.querySelector(`.card-${id}`);
+        const tr = document.getElementById(`${id}`);
         axios.delete(`${url}/${id}/delete`);
-        if (url === '/employee') {
-            const card = document.getElementById(`${id}`);
-            card.querySelector("p.status").classList.replace('active','inactive');
-        }
-        if (url !== '/employee') {
-            document.getElementById(`${id}`).remove();
-        }
-        
-        if (card) {
-            card.remove();
-        }
+        tr.remove();
+    }
+    if (deleteTime) {
+        const validate = confirm("Deseja apagar ?");
+        if (!validate) return;
+        const id = deleteTime.dataset.deleteTime;
+        const trTime = document.getElementById(`time-${id}`);
+        axios.delete(`${url}/${id}/time/delete`);
+        trTime.remove();
     }
     if (timeForm) {
         const formEl1 = document.getElementById('add-time-part');
@@ -279,6 +286,9 @@ document.addEventListener("click", (e) => {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
             }
         }).then(res => {
+            localStorage.removeItem('historicoLapsHTML');
+            localStorage.removeItem('proximoLapNumero');
+            localStorage.removeItem('time');
             window.location.reload();
         }).catch(err => {
             console.log(err.response.data);
@@ -289,4 +299,20 @@ document.addEventListener("click", (e) => {
         window.location.href = `/dashboard/show/${id}`;
     }
     
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const htmlSalvo = localStorage.getItem('historicoLapsHTML');
+    const numeroSalvo = localStorage.getItem('proximoLapNumero');
+    const time = localStorage.getItem('time');
+    if (htmlSalvo) {
+        document.getElementById("laps").style.visibility = 'visible';
+        lapsContainer.innerHTML = htmlSalvo;
+        lapNumber = parseInt(numeroSalvo);
+        if (lapNumber > 0 && lapNumber > 1) {
+            btnCalc.classList.remove('hidden');
+        }
+        timeDisplay.textContent =  time;
+        toggleButtons(['continue', 'reset'], ['start','pause', 'lap']);
+    }
 });

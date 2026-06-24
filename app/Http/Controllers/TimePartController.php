@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 use App\Models\TimePart;
+use App\Models\Time;
 
 
 
@@ -15,7 +16,7 @@ class TimePartController extends Controller
     public function index()
     {
         $totalCalcMargem = [];
-        $timeParts = TimePart::with('internalReference', 'employee', 'operation', 'times')
+        $timeParts = TimePart::with('internalReference', 'employee', 'operation', 'times', 'machine')
         ->where('user_id',Auth::id())->get()->map(function ($item) use (&$totalCalcMargem) {
             
             $laps = $item->times->pluck('lap_time');
@@ -45,6 +46,7 @@ class TimePartController extends Controller
                 'production_pace' => $item->production_pace,
                 'employee'        => $item->employee->name,
                 'operation'       => $item->operation->description,
+                'machine'         => $item->machine->name,
                 'calcByEmployee'  => number_format($calcMargem, 2, ',', '.')
             ];
         })->groupBy(['center_work','reference']);
@@ -57,7 +59,7 @@ class TimePartController extends Controller
         $dataHoraBr = now()->format('d/m/Y H:i:s');
         $date = now()->format('dmy');
         $totalCalcMargem = [];
-        $timeParts = TimePart::with('internalReference', 'employee', 'operation', 'times')
+        $timeParts = TimePart::with('internalReference', 'employee', 'operation', 'times', 'machine')
         ->where('user_id',Auth::id())->get()->map(function ($item) use (&$totalCalcMargem) {
             
             $laps = $item->times->pluck('lap_time');
@@ -91,6 +93,7 @@ class TimePartController extends Controller
                 'production_pace' => $item->production_pace,
                 'employee'        => $item->employee->name,
                 'operation'       => $item->operation->description,
+                'machine'         => $item->machine->name,
                 'calcByEmployee'  => number_format($calcMargem, 2, ',', '.'),
                 'lap'             => $lapsAssociadas
             ];
@@ -124,6 +127,7 @@ class TimePartController extends Controller
             'internal_reference_id' => $data['internal_reference_id'],
             'employee_id'     => $data['employee_id'],
             'operation_id'    => $data['operation_id'],
+            'machine_id'      => $data['machine_id'],
             'center_work'     => $data['center_work'],
             'margin_value'    => $data['margin_value'],
             'production_pace' => $data['production_pace'],
@@ -143,5 +147,70 @@ class TimePartController extends Controller
     public function delete($ref, $id)
     {
         TimePart::find($id)->delete();
+    }
+    public function deleteTime($ref, $id)
+    {
+        Time::find($id)->delete();
+    }
+
+    public function search(Request $request)
+    {
+        $search = $request->search;
+
+        $query = TimePart::with([
+            'internalReference',
+            'employee',
+            'operation',
+            'times',
+            'machine'
+        ])->where('user_id', Auth::id());
+
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+
+                $q->where('center_work', 'like', "%{$search}%")
+
+                    ->orWhereHas('internalReference', function ($q) use ($search) {
+                        $q->where('ref_code', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        $totalCalcMargem = [];
+
+        $timeParts = $query->get()->map(function ($item) use (&$totalCalcMargem) {
+
+            $laps = $item->times->pluck('lap_time');
+
+            $totalSegundos = 0;
+
+            foreach ($laps as $time) {
+                [$hh, $mm, $ss] = explode(':', $time);
+                $totalSegundos += ($hh * 3600) + ($mm * 60) + (float)$ss;
+            }
+
+            $media = (($totalSegundos / $laps->count()) * $item->production_pace) / 100;
+            $calcMargem = $media + ($media * ($item->margin_value / 100));
+
+            $refs = $item->internalReference->ref_code;
+            $grup = $item->center_work;
+
+            $totalCalcMargem[$refs][$grup] =
+                ($totalCalcMargem[$refs][$grup] ?? 0) + ($calcMargem * 0.01);
+
+            return [
+                'id'              => $item->id,
+                'center_work'     => $item->center_work,
+                'margin'          => $item->margin_value,
+                'reference'       => $refs,
+                'production_pace' => $item->production_pace,
+                'employee'        => $item->employee->name,
+                'operation'       => $item->operation->description,
+                'machine'         => $item->machine->name,
+                'calcByEmployee'  => number_format($calcMargem, 2, ',', '.')
+            ];
+        })->groupBy(['center_work', 'reference']);
+
+        return view('dashboard', compact('timeParts', 'totalCalcMargem'));
     }
 }

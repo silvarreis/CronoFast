@@ -23,9 +23,7 @@
         </div>
         @foreach($employees as $employee)
             <x-card id="{{ $employee->id }}">
-                <x-card.header title="{{ $employee->id }}">
-                    <p class="status {{ $employee->status }}"></p>
-                </x-card.header>
+                <x-card.header title="{{ $employee->id }}"/>
                 <x-card.body>
                     <p class="text">{{ $employee->name }}</p>
                 </x-card.body>   
