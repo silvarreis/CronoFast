@@ -55,7 +55,7 @@ form.addEventListener('submit', function(e){
       };
     }, 3000);
   }
-
+});
 document.querySelector('form').addEventListener('submit', function(e){
     e.preventDefault();
 

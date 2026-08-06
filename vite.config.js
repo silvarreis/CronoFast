@@ -10,7 +10,6 @@ export default defineConfig({
                 'resources/css/auth.css', 
                 'resources/js/app.js',
                 'resources/js/auth.js',
-                'resources/js/auth.js', 
                 'resources/js/app.js', 
                 'resources/js/bootstrap.js'
             ],
