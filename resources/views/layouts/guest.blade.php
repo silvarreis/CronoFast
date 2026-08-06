@@ -6,10 +6,11 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>Login</title>
-
+        
         @vite(['resources/css/auth.css'])
     </head>
     <body>
         {{ $slot }} 
     </body>
+     @vite(['resources/js/auth.js'])
 </html>

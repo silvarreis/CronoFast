@@ -1,7 +1,7 @@
 <x-app-layout>
     @if($operations->isEmpty())
         <span class="col-12 not-found">
-           não a operação cadastrada...
+           não há operação cadastrada...
         </span> 
         <button data-open="add-operation" class="col-12 btn-not-found">
             CLIQUE AQUI PARA CADASTRAR
