@@ -32,6 +32,7 @@
         border: none;
         cursor: pointer;
         text-decoration: none;
+        text-align: center;
     }
     .lap-number{ background-color: #0b1f3A; color: #FFFFFF}
     a:hover { background: linear-gradient(90deg, #0b1f3A, #1E5EFF);}
@@ -59,15 +60,19 @@
         padding: 2px 5px;
         color: #FFFFFF;
         border-radius: 2px 5px;
+        font-size: 14px;
     }
     .container {
         width: 100%;
+        display: flex;
+        gap:10px;
+        
     }
     .card {
         display: inline-block;
         vertical-align: top;
         width: 20%;
-        margin: 5px;
+    
         text-align: left;
         background-color: #FFFFFF;
         border: 1px solid #ccc;
@@ -81,6 +86,7 @@
     .card .header .title {
         font-weight: bold;
         font-size: 18px;
+        margin-bottom: 5px;
     }
     .card .body {
         max-height: 410px;
@@ -90,6 +96,21 @@
     .card .body table {
         margin:2px auto;
         width: 98%;
+    }
+    @media (max-width: 835px) {
+        .container {
+            flex-direction:column;
+        }
+        .card {
+            width: 100%;
+        }
+        nav {
+            gap: 8px;
+        }
+        body {
+            margin-left: 5px;
+            margin-right: 5px;
+        }
     }
 </style>
 <body>
@@ -103,13 +124,14 @@
             @endforeach
             @if(!$isPdf)
                 <a href="/dashboard">Voltar</a>
-                <a href="{{ request()->url() }}?pdf=1">EXPORTAR PARA PDF</a>
+                <a id="btn-pdf" href="{{ request()->url() }}?pdf=1">SALVAR EM PDF</a>
             @endif
         </nav>
         <table>
             <thead>
                 <tr>
                     <th>Nome</th>
+                    <th>Maq.</th>
                     <th>Operação</th>
                     <th>Valor</th>
                     <th>%</th>
@@ -122,6 +144,7 @@
                     @foreach($items as $item)
                         <tr id="{{ $item['id'] }}">
                             <td>{{ $item['employee'] }}</td>
+                            <td>{{ $item['machine'] }}</td>
                             <td>{{ $item['operation'] }}</td> 
                             <td>{{ $item['calcByEmployee'] }}</td>
                             <td>{{ $item['production_pace'] }}</td>
@@ -138,7 +161,7 @@
                 <tfoot>
                     <tr>
                         <th colspan="2">Total (minutos)</th>
-                        <th colspan="4">{{ number_format($totalCalcMargem[$ref], 2, ',', '.') }}</th>
+                        <th colspan="4">{{ number_format($totalCalcMargem[$ref][$grup], 2, ',', '.') }}</th>
                     <tr>
                 </tfoot>
         </table>
@@ -149,13 +172,21 @@
                 <div class="card card-{{ $data['id'] }}">
                     <div class="header">
                         <p class="title">{{ $data['employee'] }}</p>
+                        <p>{{ $data['machine'] }}</p>
                     </div>
                     <div class="body">
                         <table>
                             @foreach($data['lap'] as $dt)
-                                <tr id="{{ $dt['id'] }}">
+                                <tr id="time-{{ $dt['id'] }}">
                                     <td class="lap-number">{{ $dt['lap_number'] }}</td>
                                     <td>{{ $dt['lap_time'] }}</td>
+                                    @if(!$isPdf)
+                                        <td>
+                                            <button class="delete" data-delete-time="{{ $dt['id'] }}">
+                                                Excluir
+                                            </button>
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </table> 

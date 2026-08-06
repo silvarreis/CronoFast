@@ -9,12 +9,14 @@ use Illuminate\View\Component;
 use App\Models\InternalReference;
 use App\Models\Operation;
 use App\Models\Employee;
+use App\Models\Machine;
 
 class AddPartsTimes extends Component
 {
     public $employees;
     public $operations;
     public $internalReferences;
+    public $machines;
 
     public function __construct()
     {
@@ -26,6 +28,9 @@ class AddPartsTimes extends Component
 
         $this->internalReferences = InternalReference::where('user_id', auth()->id())
         ->pluck('ref_code', 'id');
+        
+        $this->machines = Machine::where('user_id', auth()->id())
+        ->pluck('name','id');
     }
 
     /**

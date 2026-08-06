@@ -7,13 +7,13 @@ const formLaps          = document.querySelector("#laps");
 const meanArithmeticTag = document.getElementById("mean-arithmetic");
 const totalSelectedTag  = document.getElementById("total-selected");
 const totalTag          = document.getElementById("total");
+const selectAll         = document.getElementById('selectAll');
 
 let interval = false, arrayTime = [];
 let hour = 0, minutes = 0, hundredthsSecond = 0.0, i = 0, lapNumber = 1;
 let timeDisplay = document.getElementById('time');
 let lapsContainer = document.getElementById('laps');
-let boxResultLap = document.getElementById('box-result-lap');
-let btnCalc = document.querySelector("[data-open='add-times']");
+let btnCalc = document.querySelector(".btn-calc-laps");
 
 let timerLogic = {
     start: () => {
@@ -43,13 +43,13 @@ let timerLogic = {
         lapNumber = String(lapNumber).padStart(2, '0');
         const totalTime = timeDisplay.textContent;
         const lapTime = calcLapTime(totalTime);
-        boxResultLap.style.visibility = 'visible';
+        document.getElementById("laps").style.visibility = 'visible';
         const lapTimeBox = document.createElement('label');
-        lapTimeBox.classList.add('item');
+        lapTimeBox.classList.add("item");
         lapTimeBox.innerHTML = `
-            <span class="lap-number">${lapNumber}</span>
-            <input type="checkbox" class="hidden-checkbox" name="times[]" value="${lapNumber}, ${totalTime}, ${lapTime}">
+            <input type="checkbox" class="hidden-checkbox" id="${lapNumber}" name="times[]" value="${lapNumber}, ${totalTime}, ${lapTime}">
             <div class="record">
+                <span class="lap-number" for="${lapNumber}">${lapNumber}</span>
                 <span>${totalTime}</span>
                 <span>|</span>
                 <span><strong>${lapTime}</strong></span>
@@ -57,6 +57,9 @@ let timerLogic = {
         `
         lapNumber++;
         lapsContainer.prepend(lapTimeBox);
+        localStorage.setItem('historicoLapsHTML', lapsContainer.innerHTML);
+        localStorage.setItem('proximoLapNumero', lapNumber);
+        localStorage.setItem('time', totalTime);
     },
     pause: () => {
         if (lapNumber > 0 && lapNumber > 1) {
@@ -69,9 +72,12 @@ let timerLogic = {
         toggleButtons(['continue', 'reset'], ['pause', 'lap']);
     },
     reset: () => {
+        localStorage.removeItem('historicoLapsHTML');
+        localStorage.removeItem('proximoLapNumero');
+        localStorage.removeItem('time');
         btnCalc.classList.add('hidden');
         lapsContainer.replaceChildren();
-        boxResultLap.style.visibility = 'hidden';
+        document.getElementById("laps").style.visibility = 'hidden';
         arrayTime = [];
         lapNumber = 1;
         showTime(true);
@@ -159,9 +165,16 @@ if (boxControls) {
         }
     });
 }
+if (selectAll) {
+    selectAll.addEventListener('change', function () {
+        document.querySelectorAll('.hidden-checkbox').forEach(item => {
+            item.checked = this.checked;
+        });
+    });
+}
 function updateProgress(percent) {
     document.querySelector('#time')
-        .style.setProperty('--progress', percent);
+    .style.setProperty('--progress', percent);
 }
 const getForm = (id) => document.getElementById(id);
 
@@ -171,6 +184,7 @@ document.addEventListener("click", (e) => {
     const sendForm = e.target.closest("[data-send]");
     const edit     = e.target.closest("[data-edit]");
     const deleteUp = e.target.closest("[data-delete]");
+    const deleteTime = e.target.closest("[data-delete-time]");
     const timeForm = e.target.closest("[data-time]");
     const view     = e.target.closest("[data-view]");
     const url      = window.location.pathname;
@@ -225,7 +239,7 @@ document.addEventListener("click", (e) => {
     if (edit) {
         const id = edit.dataset.edit;
         const form = document.querySelector(`#form-edit-${url.split('/')[1]}`);
-        const input = form.querySelectorAll('input, select')
+        const input = form.querySelectorAll('input')
         axios.get(`${url}/${id}/edit`).then(response => {
             const data = response.data;
             input.forEach(input => {
@@ -240,20 +254,20 @@ document.addEventListener("click", (e) => {
         });
     }
     if (deleteUp) {
+        const validate = confirm("Deseja apagar ?");
+        if (!validate) return;
         const id = deleteUp.dataset.delete;
-        const card = document.querySelector(`.card-${id}`);
+        const tr = document.getElementById(`${id}`);
         axios.delete(`${url}/${id}/delete`);
-        if (url === '/employee') {
-            const card = document.getElementById(`${id}`);
-            card.querySelector("p.status").classList.replace('active','inactive');
-        }
-        if (url !== '/employee') {
-            document.getElementById(`${id}`).remove();
-        }
-        
-        if (card) {
-            card.remove();
-        }
+        tr.remove();
+    }
+    if (deleteTime) {
+        const validate = confirm("Deseja apagar ?");
+        if (!validate) return;
+        const id = deleteTime.dataset.deleteTime;
+        const trTime = document.getElementById(`time-${id}`);
+        axios.delete(`${url}/${id}/time/delete`);
+        trTime.remove();
     }
     if (timeForm) {
         const formEl1 = document.getElementById('add-time-part');
@@ -272,6 +286,9 @@ document.addEventListener("click", (e) => {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
             }
         }).then(res => {
+            localStorage.removeItem('historicoLapsHTML');
+            localStorage.removeItem('proximoLapNumero');
+            localStorage.removeItem('time');
             window.location.reload();
         }).catch(err => {
             console.log(err.response.data);
@@ -282,4 +299,20 @@ document.addEventListener("click", (e) => {
         window.location.href = `/dashboard/show/${id}`;
     }
     
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const htmlSalvo = localStorage.getItem('historicoLapsHTML');
+    const numeroSalvo = localStorage.getItem('proximoLapNumero');
+    const time = localStorage.getItem('time');
+    if (htmlSalvo) {
+        document.getElementById("laps").style.visibility = 'visible';
+        lapsContainer.innerHTML = htmlSalvo;
+        lapNumber = parseInt(numeroSalvo);
+        if (lapNumber > 0 && lapNumber > 1) {
+            btnCalc.classList.remove('hidden');
+        }
+        timeDisplay.textContent =  time;
+        toggleButtons(['continue', 'reset'], ['start','pause', 'lap']);
+    }
 });

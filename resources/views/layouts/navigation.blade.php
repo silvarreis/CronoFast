@@ -16,6 +16,9 @@
                 <a href="/employee">Operador</a>
             </li>
             <li>
+                <a href="/machine">Maquinas</a>
+            </li>
+            <li>
                 <a href="/dashboard">Tempos</a>
             </li>
             <li class="dropdown">

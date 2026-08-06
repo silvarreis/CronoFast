@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('internal_reference_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('employee_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('operation_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('machine_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->string('center_work',length: 14);
             $table->decimal('margin_value', 5, 2);
             $table->integer('production_pace');

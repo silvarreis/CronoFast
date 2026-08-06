@@ -6,6 +6,7 @@ use App\Http\Controllers\RefInternalController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\OperationController;
 use App\Http\Controllers\TimePartController;
+use App\Http\Controllers\MachineController;
 use App\Http\Controllers\PdfController;
 
 Route::get('/stopwatch', function () {
@@ -16,7 +17,8 @@ Route::redirect('/', '/stopwatch');
 
 Route::get('/dashboard/show/{id}', [TimePartController::class, 'show'])->middleware(['auth', 'verified']);
 Route::delete('/dashboard/show/{ref?}/{id}/delete', [TimePartController::class, 'delete'])->middleware(['auth', 'verified']);
-
+Route::post('/dashboard/search', [TimePartController::class, 'search'])->name('dash.search');
+Route::delete('/dashboard/show/{ref?}/{id}/time/delete', [TimePartController::class, 'deleteTime'])->middleware(['auth', 'verified']);
 
 Route::post('/stopwatch', [TimePartController::class, 'store'])->middleware(['auth', 'verified'])->name('stopwatch.store');
 Route::get('/dashboard',  [TimePartController::class, 'index'])->middleware(['auth', 'verified']);
@@ -39,9 +41,16 @@ Route::get('/employee', [EmployeeController::class, 'index'])->middleware(['auth
 Route::post('/employee', [EmployeeController::class, 'store'])->middleware(['auth', 'verified'])->name('employee.store');
 Route::get('/employee/{id}/edit', [EmployeeController::class, 'edit'])->middleware(['auth', 'verified']);
 Route::put('/employee/{id}', [EmployeeController::class, 'update'])->middleware(['auth', 'verified']);
-Route::delete('/employee/{id}/delete', [EmployeeController::class, 'softDelete'])->middleware(['auth', 'verified']);
+Route::delete('/employee/{id}/delete', [EmployeeController::class, 'delete'])->middleware(['auth', 'verified']);
 Route::get('/employee/show', [EmployeeController::class, 'show'])->middleware(['auth', 'verified'])->name('employee.show');
 
+
+Route::get('/machine', [MachineController::class, 'index'])->middleware(['auth', 'verified']);
+Route::post('/machine', [MachineController::class, 'store'])->middleware(['auth', 'verified'])->name('machine.store');
+Route::get('/machine/{id}/edit', [MachineController::class, 'edit'])->middleware(['auth', 'verified']);
+Route::put('/machine/{id}', [MachineController::class, 'update'])->middleware(['auth', 'verified']);
+Route::delete('/machine/{id}/delete', [MachineController::class, 'delete'])->middleware(['auth', 'verified']);
+Route::get('/machine', [MachineController::class, 'show'])->name('operation.show');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
