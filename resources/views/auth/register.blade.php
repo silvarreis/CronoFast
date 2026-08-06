@@ -2,7 +2,6 @@
    
     <h1 class="title">CRONOFAST</h1>
 
-    
     <form method="POST" id="form-register" action="{{ route('register') }}">
         @csrf
         <div id="step-1">
