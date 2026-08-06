@@ -1,7 +1,7 @@
 <x-app-layout>
     @if($refIternals->isEmpty())
         <span class="col-12 not-found">
-           não a referencia cadastrada...
+           não há referencia cadastrada...
         </span>
         <button data-open="add-refIternal" class="col-12 btn-not-found">
             CLIQUE AQUI PARA CADASTRAR

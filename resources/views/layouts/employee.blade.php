@@ -1,7 +1,7 @@
 <x-app-layout>
     @if($employees->isEmpty())
         <span class="col-12 not-found">
-            não a operador cadastrado...
+            não há operador cadastrado...
         </span>
         <button data-open="add-employee" class="col-12 btn-not-found">
             CLIQUE AQUI PARA CADASTRAR
