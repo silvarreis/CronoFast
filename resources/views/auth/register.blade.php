@@ -45,7 +45,11 @@
             <button type="button" id="nextStep">Continuar</button>
         </div>
     </form>
-    
-    <p id="copy">&copy; 2025 - {{ $now }} | Dev: <a href="#">Diogo Oliveira</a></p>
+    <div id="cardPaymentBrick_container"></div>
+    <p id="copy">
+        Copyright © 2025 - {{ $now }} FORTEX. 
+        All rights reserved.Developed by 
+        <a href="">Diogo Oliveira.</a>
+    </p>
     
 </x-guest-layout>
