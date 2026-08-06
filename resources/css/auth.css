@@ -29,7 +29,7 @@ body {
     display:flex;
     flex-direction:column;
     gap:20px;
-=======
+
     height: 100vh;
     display: grid;
     grid-auto-flow: row;
@@ -87,7 +87,7 @@ button {
    border: 1px solid #0B1F3A;
    border-radius: 5px;
    padding: 5px 8px;
-=======
+
    font-size: 1.4em;
    cursor: pointer;
    border: 1px solid #0B1F3A;
@@ -169,7 +169,6 @@ input[type="radio"]:disabled {
 }
 #icon-copy {
     font-size: 0.5em;
-=======
     align-self: flex-end;
     grid-column: span 12;
     text-align: center;
