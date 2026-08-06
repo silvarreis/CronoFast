@@ -6,10 +6,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-
-        <title>Login</title>
-        
-=======
         <title>CronoFast | {{$title}}</title>
 
         @vite(['resources/css/auth.css'])
@@ -18,5 +14,5 @@
         {{ $slot }}
         @vite(['resources/js/auth.js'])
     </body>
-     @vite(['resources/js/auth.js'])
+    
 </html>
