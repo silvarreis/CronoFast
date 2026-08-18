@@ -160,3 +160,13 @@ back.addEventListener('click', (e) => {
     next.textContent = "Continuar";
     back.style.display = "none";
 });
+
+window.addEventListener('DOMContentLoaded', () => {
+    if ('caches' in window) {
+        caches.keys().then((cacheNames) => {
+            cacheNames.forEach((cacheName) => {
+                caches.delete(cacheName);
+            });
+        }).catch((error) => console.error('Erro ao limpar cache:', error));
+    }
+});
