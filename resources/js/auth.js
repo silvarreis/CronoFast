@@ -81,7 +81,7 @@ next.addEventListener('click', (e) => {
                 break;
         }
         const mp = new MercadoPago(
-            import.meta.env.VITE_MERCADO_PAGO_PUBLIC_KEY,
+            'APP_USR-e5ba5c8e-7488-4cee-b8aa-632a2411278a',
             {
                 locale: "pt-BR"
             }
