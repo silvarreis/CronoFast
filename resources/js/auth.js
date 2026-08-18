@@ -11,7 +11,7 @@ const info = document.getElementById('info');
 
 let currentStep = 1;
 let amount = 0;
-
+if (next) {
 next.addEventListener('click', (e) => {
     e.preventDefault();
 
@@ -153,14 +153,16 @@ next.addEventListener('click', (e) => {
     }
     
 });
-back.addEventListener('click', (e) => {
-    e.preventDefault();
-    step2.style.display = "none";
-    step1.style.display = "grid";
-    next.textContent = "Continuar";
-    back.style.display = "none";
-});
-
+}
+if (back) {
+    back.addEventListener('click', (e) => {
+        e.preventDefault();
+        step2.style.display = "none";
+        step1.style.display = "grid";
+        next.textContent = "Continuar";
+        back.style.display = "none";
+    });
+}
 window.addEventListener('DOMContentLoaded', () => {
     if ('caches' in window) {
         caches.keys().then((cacheNames) => {
