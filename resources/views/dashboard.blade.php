@@ -27,7 +27,7 @@
                                         <th>Nome</th>
                                         <th>Maq.</th>
                                         <th>Operação</th>
-                                        <th>Valor</th>
+                                        <th>CM</th>
                                         <th>%</th>
                                     </tr>
                                 </thead>

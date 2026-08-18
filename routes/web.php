@@ -8,12 +8,18 @@ use App\Http\Controllers\OperationController;
 use App\Http\Controllers\TimePartController;
 use App\Http\Controllers\MachineController;
 use App\Http\Controllers\PdfController;
+use App\Http\Controllers\CheckoutController;
 
 Route::get('/stopwatch', function () {
     return view('layouts.stopwatch');
 })->middleware(['auth', 'verified'])->name('dashboard');
 Route::redirect('/', '/stopwatch');
 
+Route::get('/checkout', [CheckoutController::class,'index']);
+Route::post('/preapproval', [CheckoutController::class, 'preapproval']);
+
+Route::get('/form-plan', [CheckoutController::class,'showFormPlan']);
+Route::post('/form-plan', [CheckoutController::class,'createPlan']);
 
 Route::get('/dashboard/show/{id}', [TimePartController::class, 'show'])->middleware(['auth', 'verified']);
 Route::delete('/dashboard/show/{ref?}/{id}/delete', [TimePartController::class, 'delete'])->middleware(['auth', 'verified']);

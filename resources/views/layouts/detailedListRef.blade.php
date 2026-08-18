@@ -133,7 +133,7 @@
                     <th>Nome</th>
                     <th>Maq.</th>
                     <th>Operação</th>
-                    <th>Valor</th>
+                    <th>CM</th>
                     <th>%</th>
                     @if(!$isPdf)
                         <th>Ação</th>

@@ -15,13 +15,14 @@ use App\Models\Operation;
 use App\Models\Time;
 use App\Models\TimePart;
 use App\Models\Machine;
+use Laravel\Sanctum\HasApiTokens;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['name', 'email', 'password', 'role'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasApiTokens;
 
     public function employees()
     {
@@ -47,16 +48,21 @@ class User extends Authenticatable
     {
         return $this->hasMany(Machine::class);
     }
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    public function activeSubscription()
+    {
+        return $this->hasOne(Subscription::class)
+            ->where('status', 'active')
+            ->where('expires_at', '>', now());
     }
 }

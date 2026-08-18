@@ -8,34 +8,32 @@
 body {
     background-image: url("../../public/images/fundo-login.png");
     background-repeat: no-repeat;
-    width:100%;
-    height:100vh;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:flex-start;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
     padding-left: 1%;
-    position:relative;
+    position: relative;
 }
-
 .title {
     position: fixed;
     left: 0;
     top: 0;
 }
 #step-1,
-#step-2{
-    display:flex;
-    flex-direction:column;
-    gap:20px;
+#step-2 {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
-
 input {
     padding: 8px 0;
-    background: transparent; 
-    border: none; 
+    background: transparent;
+    border: none;
     border-bottom: 2px solid #ccc;
-    outline: none;    
+    outline: none;
     color: #FFFFFF;
     transition: border-color 0.3s;
     font-size: 18px;
@@ -47,9 +45,9 @@ input:focus {
     border-bottom: 2px solid #1E5EFF;
 }
 input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active  {
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
     transition: background-color 999999s ease-in-out 0s;
     -webkit-text-fill-color: #FFFFFF !important;
     background-color: transparent !important;
@@ -62,12 +60,12 @@ a:hover {
     text-decoration: underline;
 }
 button {
-   background: linear-gradient(120deg, #0B1F3A, #1E5EFF);
-   font-size: 1.2em;
-   cursor: pointer;
-   border: 1px solid #0B1F3A;
-   border-radius: 5px;
-   padding: 5px 8px;
+    background: linear-gradient(120deg, #0B1F3A, #1E5EFF);
+    font-size: 1.2em;
+    cursor: pointer;
+    border: 1px solid #0B1F3A;
+    border-radius: 5px;
+    padding: 5px 8px;
 }
 button:hover {
     background: linear-gradient(135deg, #0B1F3A, #1E5EFF, #0B1F3A);
@@ -77,8 +75,7 @@ button:hover {
     left: 0;
     bottom: 10px;
 }
-
-.box{
+.box {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -87,73 +84,75 @@ button:hover {
     border-radius: 10px;
     cursor: pointer;
     gap: 15px;
+    input[type="radio"] {
+        appearance: none;
+        background-color: transparent;
+        margin: 0;
+        font: inherit;
+        color: #1E5EFF;
+        width: 20px;
+        height: 20px;
+        border: 1px solid #1E5EFF;
+        border-radius: 50%;
+        cursor: pointer;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    input[type="radio"]:checked {
+        border: 2px solid #1E5EFF;
+        background-color: #1E5EFF;
+    }
+    .title-box,
+    .price-box {
+        font-weight: bold;
+        color: #ccc;
+        text-align: left;
+    }
+    .price-box span {
+        font-size: 0.9em;
+    }
+    input[type="radio"]:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+        border: 1px solid #a9a9a9;
+    }
+    .box:has(input[type="radio"]:disabled) {
+        border: 1px solid #a9a9a9 !important;
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
 }
-.left{
+.left {
     display: flex;
     align-items: center;
     gap: 15px;
 }
-
-input[type="radio"] {
-  appearance: none;
-  background-color: transparent;
-  margin: 0;
-  font: inherit;
-  color: #1E5EFF;
-  width: 20px;
-  height: 20px;
-  border: 1px solid #1E5EFF;
-  border-radius: 50%;
-  cursor: pointer;
-  display: inline-block;
-  vertical-align: middle;
+#backStep,
+#payStep {
+    display: none;
 }
-input[type="radio"]:checked {
-  border: 2px solid #1E5EFF; 
-  background-color: #1E5EFF; 
-}
-.title-box,
-.price-box {
-    font-weight: bold;
-    color: #ccc;
-    text-align: left;
-}
-.price-box span {
-    font-size: 0.9em;
-}
-input[type="radio"]:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-  border:1px solid #a9a9a9;
-}
-.box:has(input[type="radio"]:disabled) {
-    border: 1px solid #a9a9a9 !important;
-    cursor: not-allowed;
-    opacity: 0.6;
-}
-#backStep {display: none;}
 .box-btns {
-    margin-top: 10px;   
+    margin-top: 10px;
     display: flex;
     justify-content: space-between;
 }
-#btn, #nextStep{
+#btn,
+#nextStep {
     float: right;
 }
 @media (max-width: 835px) {
     body {
         background-repeat: no-repeat;
         background-attachment: fixed;
-        background-size: cover;      
+        background-size: cover;
         background-position: 70% center;
-    }
-    .title {
-        text-align: center;
     }
     form {
         background-color: #0b1f3aff;
         padding: 25px 15px;
         align-content: center;
         grid-column: span 12;
+        width: 98%;
     }
-}
+} 
+

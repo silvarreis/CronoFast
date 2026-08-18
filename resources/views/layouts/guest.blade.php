@@ -9,10 +9,10 @@
         <title>CronoFast | {{$title}}</title>
 
         @vite(['resources/css/auth.css'])
+        <script src="https://sdk.mercadopago.com/js/v2"></script>
     </head>
     <body>
         {{ $slot }}
-        @vite(['resources/js/auth.js'])
     </body>
-    
+    @vite(['resources/js/auth.js'])
 </html>

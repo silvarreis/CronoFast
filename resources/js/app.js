@@ -66,7 +66,6 @@ let timerLogic = {
             btnCalc.classList.remove('hidden');
             timerLogic.lap();
         }
-    
         clearInterval(interval);
         interval = false;
         toggleButtons(['continue', 'reset'], ['pause', 'lap']);
@@ -75,6 +74,8 @@ let timerLogic = {
         localStorage.removeItem('historicoLapsHTML');
         localStorage.removeItem('proximoLapNumero');
         localStorage.removeItem('time');
+        localStorage.clear();
+        sessionStorage.clear();
         btnCalc.classList.add('hidden');
         lapsContainer.replaceChildren();
         document.getElementById("laps").style.visibility = 'hidden';
