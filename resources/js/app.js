@@ -9,35 +9,42 @@ const totalSelectedTag  = document.getElementById("total-selected");
 const totalTag          = document.getElementById("total");
 const selectAll         = document.getElementById('selectAll');
 
-let interval = false, arrayTime = [];
-let hour = 0, minutes = 0, hundredthsSecond = 0.0, i = 0, lapNumber = 1;
+let interval;
+let arrayTime = [];
+let hour = 0;
+let minutes = 0;
+let hundredthsSecond = 0;
+let i = 0;
+let lapNumber = 1;
 let timeDisplay = document.getElementById('time');
 let lapsContainer = document.getElementById('laps');
 let btnCalc = document.querySelector(".btn-calc-laps");
 
+
 let timerLogic = {
     start: () => {
-        if (!interval) {
-            interval = setInterval(() => {
-                hundredthsSecond = Math.round((hundredthsSecond + 0.01) * 100) / 100;
-                updateProgress(hundredthsSecond);
-                if (hundredthsSecond == 99.99) {
-                    hundredthsSecond = 0;
-                    minutes++;
-                }
-                if (minutes == 60) {
-                    minutes = 0;
-                    hour = 1;
-                }
-                if (hour == 24) {
-                    hour = 0;
-                    minutes = 0;
-                    hundredthsSecond = 0;
-                }
+        console.time("setInterval");
+        interval = setInterval(() => {
+            console.timeLog("setInterval");
+            hundredthsSecond = Math.round((hundredthsSecond + 0.01) * 100) / 100;
+            updateProgress(hundredthsSecond);
+            if (hundredthsSecond == 99.99) {
+                hundredthsSecond = 0;
+                minutes++;
+            }
+            if (minutes == 60) {
+                minutes = 0;
+                hour = 1;
+            }
+            if (hour == 24) {
+                hour = 0;
+                minutes = 0;
+                hundredthsSecond = 0;
+            }
                 showTime();
-                toggleButtons(['lap', 'pause'], ['start']);
-            }, 6);
-        } 
+        }, 6);
+        
+        toggleButtons(['lap', 'pause'], ['start']);
     },
     lap: () => {
         lapNumber = String(lapNumber).padStart(2, '0');
@@ -57,53 +64,60 @@ let timerLogic = {
         `
         lapNumber++;
         lapsContainer.prepend(lapTimeBox);
-        localStorage.setItem('historicoLapsHTML', lapsContainer.innerHTML);
-        localStorage.setItem('proximoLapNumero', lapNumber);
-        localStorage.setItem('time', totalTime);
     },
     pause: () => {
+        clearInterval(interval);
+        interval = null;
+        console.timeEnd("setInterval");
+
         if (lapNumber > 0 && lapNumber > 1) {
             btnCalc.classList.remove('hidden');
             timerLogic.lap();
         }
-        clearInterval(interval);
-        interval = false;
+        
         toggleButtons(['continue', 'reset'], ['pause', 'lap']);
     },
     reset: () => {
-        localStorage.removeItem('historicoLapsHTML');
-        localStorage.removeItem('proximoLapNumero');
-        localStorage.removeItem('time');
-        localStorage.clear();
-        sessionStorage.clear();
+        clearInterval(interval);
+        interval = null;
+
+
+        // ZERA O TEMPO
+        hundredthsSecond = 0;
+        minutes = 0;
+        hour = 0;
+
         btnCalc.classList.add('hidden');
         lapsContainer.replaceChildren();
+
         document.getElementById("laps").style.visibility = 'hidden';
+
         arrayTime = [];
         lapNumber = 1;
+
         showTime(true);
-        toggleButtons(['start'], ['continue', 'reset', 'lap', 'pause']);
-        
+
+        toggleButtons(['start'],['continue', 'reset', 'lap', 'pause']);
     },
     continue: () => {
+        timerLogic.start();
         btnCalc.classList.add('hidden');
-        timerLogic.start()
         toggleButtons(['pause', 'lap'],['continue', 'reset']);
     }
 }
+
 function showTime(clear = null) {
     if (clear) {
-        clearInterval(interval);
         hour = 0; 
         minutes = 0;  
         hundredthsSecond = 0.0;
-        interval = null;
         timeDisplay.textContent = `00:00:00.00`;
     }
+
     const hh = String(hour).padStart(2, '0');
     const mm = String(minutes).padStart(2, '0');
     const ss_cc = hundredthsSecond.toFixed(2).padStart(5, '0');
-    timeDisplay.textContent = `${hh}:${mm}:${ss_cc}`; 
+    timeDisplay.textContent = `${hh}:${mm}:${ss_cc}`;
 };
 function calcLapTime(timeTotal) {
     const [h, m, s_c] = timeTotal.split(":");
@@ -287,9 +301,6 @@ document.addEventListener("click", (e) => {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
             }
         }).then(res => {
-            localStorage.removeItem('historicoLapsHTML');
-            localStorage.removeItem('proximoLapNumero');
-            localStorage.removeItem('time');
             window.location.reload();
         }).catch(err => {
             console.log(err.response.data);
@@ -302,7 +313,7 @@ document.addEventListener("click", (e) => {
     
 });
 
-document.addEventListener('DOMContentLoaded', () => {
+/*document.addEventListener('DOMContentLoaded', () => {
     const htmlSalvo = localStorage.getItem('historicoLapsHTML');
     const numeroSalvo = localStorage.getItem('proximoLapNumero');
     const time = localStorage.getItem('time');
@@ -316,14 +327,4 @@ document.addEventListener('DOMContentLoaded', () => {
         timeDisplay.textContent =  time;
         toggleButtons(['continue', 'reset'], ['start','pause', 'lap']);
     }
-});
-
-window.addEventListener('DOMContentLoaded', () => {
-    if ('caches' in window) {
-        caches.keys().then((cacheNames) => {
-            cacheNames.forEach((cacheName) => {
-                caches.delete(cacheName);
-            });
-        }).catch((error) => console.error('Erro ao limpar cache:', error));
-    }
-});
+});*/
